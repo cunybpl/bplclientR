@@ -46,32 +46,29 @@ cache_set_base_url <- function(url){ .cache$base_url <- url }
 #'
 #' returns the current base_url
 #'
-#' @param url
-#'
 #' @return the current_base_url as a string
 #' @export
-cache_get_base_url <- function(url){ .cache$base_url }
+cache_get_base_url <- function(){ .cache$base_url }
 
 
 #' cache_set_token
 #'
-#' Sets the current api token. Called after authentication succeeds
+#' Sets the current api token. Called after authentication succeeds.
+#' Should be passed a string from the "token" key in the response content.
+#' JWT header is added here
 #'
 #' @param token the jwt token sent back from the auth
 #' @export
-cache_set_token <- function(token){ .cache$token <- token }
+cache_set_token <- function(token_str){ .cache$token <- paste0('JWT ',token) }
 
 
 #' cache_get_token
 #'
 #' Retrieves the current api token for use in constructing request headers for API
 #' endpoints
-#'
-#' @param token
-#'
 #' @return the jwt token used for request headers
 #' @export
-cache_get_token <- function(token){ .cache$token }
+cache_get_token <- function(){ .cache$token }
 
 
 #' cache_set_response
