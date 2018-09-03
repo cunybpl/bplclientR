@@ -10,5 +10,7 @@ cache_set_token(token)
 \item{token}{the jwt token sent back from the auth}
 }
 \description{
-Sets the current api token. Called after authentication succeeds
+Sets the current api token. Called after authentication succeeds.
+Should be passed a string from the "token" key in the response content.
+JWT header is added here
 }

@@ -4,10 +4,7 @@
 \alias{cache_get_base_url}
 \title{cache_get_base_url}
 \usage{
-cache_get_base_url(url)
-}
-\arguments{
-\item{url}{}
+cache_get_base_url()
 }
 \value{
 the current_base_url as a string

@@ -3,15 +3,15 @@
 # The cache is treated as private and should only be accessed by the developer
 # through the methods in the cache interface.
 #
-# The base_url and token must be set before sending a request to bplservices
-# data for successful requests can be cached by setting a key=value in the
-# response_data list. These could be anything from json responses to user
+# The base url and token must be set before any fetch requests can be made
+
 
 .cache <- new.env()  # used for storage only... access using the public methods
 
 #' cache_init
 #'
-#' configures the cache environemnt. An optional base_url name can be passed in for convenience
+#' configures the cache environemnt. An optional base_url name can be passed in for convenience.
+#' This MUST be called first in order to configure the cache with the correct auth routes and base_url
 #'
 #' @param base_url either 'staging' or 'production for convenience settings. defaults to staging
 #'
@@ -19,15 +19,23 @@
 #' @export
 cache_init = function (base_url='staging') {
 
-  .cache$base_url <- NULL
+  .cache$base_url <- NULL  # setup base and token
   .cache$token <- NULL
-  .cache$response <- list()
 
   if (base_url=='staging') {
-    cache_set_base_url('https://bpl-services-staging.com/api/v1/')
+    cache_set_base_url('https://bpl-services-staging.herokuapp.com/api/v1/')
   } else if(base_url=='production') {
     cache_set_base_url('https://some-production-url.com') #configure this when production url is ready
   }
+
+  # set up token routes
+  .cache$obtain = paste0(.cache$base_url, "auth/obtain-jwt-token/")
+  .cache$refresh = paste0(.cache$base_url, "auth/refresh-jwt-token/")
+  .cache$verify = paste0(.cache$base_url, "auth/verify-jwt-token/")
+
+  sprintf('Cache initialized... \n base_url: %s', .cache$base_url)
+
+
 }
 
 
@@ -59,7 +67,7 @@ cache_get_base_url <- function(){ .cache$base_url }
 #'
 #' @param token the jwt token sent back from the auth
 #' @export
-cache_set_token <- function(token_str){ .cache$token <- paste0('JWT ',token) }
+cache_set_token <- function(token){ .cache$token <- paste0('JWT ',token) }
 
 
 #' cache_get_token
@@ -71,28 +79,29 @@ cache_set_token <- function(token_str){ .cache$token <- paste0('JWT ',token) }
 cache_get_token <- function(){ .cache$token }
 
 
-#' cache_set_response
+
+#' Title
 #'
-#' Used to store the results of requests. This could be json objects from the response
-#' body or dataframes/vectors and other R objects for use by apps.
-#'
-#' @param key the key to store the data object
-#' @param data the data object
-#'
+#' @return
 #' @export
-cache_set_response <- function(key, data){
-  .cache$response$key <- data
-}
+#'
+#' @examples
+cache_get_obtain_route <- function() { .cache$obtain }
 
 
-#' cache_get_response
+#' Title
 #'
-#' @param key key in the response store
-#'
-#' @return the
+#' @return
 #' @export
-cache_get_response <- function (key){
-  .cache_$response$key
-}
+#'
+#' @examples
+cache_get_refresh_route <- function() { .cache$refresh }
 
 
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
+cache_get_verify_route <- function() { .cache$verify }

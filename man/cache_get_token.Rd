@@ -4,10 +4,7 @@
 \alias{cache_get_token}
 \title{cache_get_token}
 \usage{
-cache_get_token(token)
-}
-\arguments{
-\item{token}{}
+cache_get_token()
 }
 \value{
 the jwt token used for request headers

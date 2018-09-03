@@ -10,5 +10,6 @@ cache_init(base_url = "staging")
 \item{base_url}{either 'staging' or 'production for convenience settings. defaults to staging}
 }
 \description{
-configures the cache environemnt. An optional base_url name can be passed in for convenience
+configures the cache environemnt. An optional base_url name can be passed in for convenience.
+This MUST be called first in order to configure the cache with the correct auth routes and base_url
 }
