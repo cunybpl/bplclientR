@@ -10,6 +10,6 @@ post_request(endpoint_url, payload = list())
 \item{payload}{}
 }
 \description{
-A post request route used for getting a token and sending request to bema. Takes
-a payload argument with a list for
+A post request route used for sending a data request to bema endpoints. Takes
+a payload argument with a list for various settings documented in the service
 }

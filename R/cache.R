@@ -80,28 +80,22 @@ cache_get_token <- function(){ .cache$token }
 
 
 
-#' Title
+#' cache_get_obtain_route
 #'
-#' @return
+#' @return the jwt-token-obtain route
 #' @export
-#'
-#' @examples
 cache_get_obtain_route <- function() { .cache$obtain }
 
 
-#' Title
+#' cache_get_refresh_route
 #'
-#' @return
+#' @return the jwt-token refresh route
 #' @export
-#'
-#' @examples
 cache_get_refresh_route <- function() { .cache$refresh }
 
 
-#' Title
+#' cache_get_verify_route
 #'
-#' @return
+#' @return the jwt-token verify route
 #' @export
-#'
-#' @examples
 cache_get_verify_route <- function() { .cache$verify }

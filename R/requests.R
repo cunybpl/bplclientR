@@ -1,6 +1,4 @@
-# request.R is a slightly lower level API wrapper, that handles the parsing
-# and httr for individual requests. This would be used as callbacks by higher
-# level functions such as the paginator and bema
+# request.R -- create requests for different endpoints
 
 
 .clean_hyperlinked_bdbids <- function(df){
@@ -82,8 +80,8 @@ fetch_request <- function(endpoint_url, query_params=NULL) {
 
 #' post_request
 #'
-#' A post request route used for getting a token and sending request to bema. Takes
-#' a payload argument with a list for
+#' A post request route used for sending a data request to bema endpoints. Takes
+#' a payload argument with a list for various settings documented in the service
 #'
 #' @param endpoint_url
 #' @param payload
@@ -108,13 +106,11 @@ post_request <- function(endpoint_url, payload=list()){
 #' This must be called at the beginning of any session so that credentials can be placed in future
 #' requests
 #'
-#' @param credentials
+#' @param credentials a username and password provided as a list
 #'
 #' @return
 #' @export
 #' @import httr
-#'
-#' @examples
 fetch_auth_token <- function(credentials=list(username='', password='')) {
 
   url <- cache_get_obtain_route() # get the obtain url
@@ -141,8 +137,6 @@ fetch_auth_token <- function(credentials=list(username='', password='')) {
 #' @return parsed result or failure
 #' @export
 #' @import httr
-#'
-#' @examples
 polling_request <- function(endpoint_url, task_id, tries=10, polling_interval=3){
 
   # get base url from cache

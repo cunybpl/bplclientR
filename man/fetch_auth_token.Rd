@@ -7,7 +7,7 @@
 fetch_auth_token(credentials = list(username = "", password = ""))
 }
 \arguments{
-\item{credentials}{}
+\item{credentials}{a username and password provided as a list}
 }
 \description{
 given a list of username/password will fetch a jwt auth token and set it in the cache.

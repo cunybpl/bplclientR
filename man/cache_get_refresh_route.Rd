@@ -2,10 +2,13 @@
 % Please edit documentation in R/cache.R
 \name{cache_get_refresh_route}
 \alias{cache_get_refresh_route}
-\title{Title}
+\title{cache_get_refresh_route}
 \usage{
 cache_get_refresh_route()
 }
+\value{
+the jwt-token refresh route
+}
 \description{
-Title
+cache_get_refresh_route
 }

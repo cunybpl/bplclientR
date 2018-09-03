@@ -2,10 +2,13 @@
 % Please edit documentation in R/cache.R
 \name{cache_get_verify_route}
 \alias{cache_get_verify_route}
-\title{Title}
+\title{cache_get_verify_route}
 \usage{
 cache_get_verify_route()
 }
+\value{
+the jwt-token verify route
+}
 \description{
-Title
+cache_get_verify_route
 }

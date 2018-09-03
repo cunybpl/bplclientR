@@ -2,10 +2,13 @@
 % Please edit documentation in R/cache.R
 \name{cache_get_obtain_route}
 \alias{cache_get_obtain_route}
-\title{Title}
+\title{cache_get_obtain_route}
 \usage{
 cache_get_obtain_route()
 }
+\value{
+the jwt-token-obtain route
+}
 \description{
-Title
+cache_get_obtain_route
 }
