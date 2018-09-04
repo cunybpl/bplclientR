@@ -2,15 +2,7 @@
 --------------
 
 An R package for interfacing with bplservices.
-
-You need to generate a personal access token using github since its currently private. You can generate one from your github settings page.
-
-Make sure you have ```devtools``` installed and then use the token to fetch the master branch:
-```{r}
-devtools::install_github('cunybpl/bplclientR', auth_token='token-string-here...')
-```
-
-You can use this to fetch data from our backend for use in various apps and projects. These endpoints include: 
+You can use this client interface to fetch data from our backend for use in various apps and projects. These endpoints include: 
 
 * dcasdb - buildings metadata and consumption from dcas 
 * temp - nyc temperature data in various formats 
@@ -18,6 +10,27 @@ You can use this to fetch data from our backend for use in various apps and proj
 * bema - dynamic utility and baseline model generation 
 
 
+### Installation
+----------------
+
+To install, you need generate a personal access token using github since its currently private. You can generate one from your github settings page.
+
+Make sure you have ```devtools``` installed and then use the token to fetch the master branch:
+```{r}
+devtools::install_github('cunybpl/bplclientR', auth_token='token-string-here...')
+```
+
+The packages exposes a small set of methods to use in making requests to our API.
+```{r}
+cache_init()              ## initialize a cache to store a token and configure base_urls 
+fetch_auth_token()        ## authenticate and store an auth token for requests 
+fetch_request()           ## make a filterable GET request to one of our read-only list views.
+paginator_fetch_request() ## make a filterable GET request that handles paginated responses 
+post_request()            ## create a task for one of the bema endpoints to compute utility and/or models 
+polling_request()         ## auto-poll for results of a requested bema task 
+```
+
+Swagger [docs](https://bpl-services-staging.herokuapp.com/api/v1) for our service provide more information for each set of endpoints. 
 
 ### Authenticate
 -----------------
@@ -38,7 +51,7 @@ The token is automatically stored in the cache on a successful request and as lo
 ### Fetch requests
 -------------------
 
-With the jwt-token cached you can make filterable get requests to any of our list-view urls. The fetch_request method performs the request, checks for errors and returns parsed content. Any data records will be automatically converted into dataframes and can be retrieved from the resulting list 
+With the jwt-token cached you can make filterable get requests to any of our list-view urls. The fetch_request method performs the request, checks for errors and returns parsed content. Any data records will be automatically converted into dataframes and can be retrieved from the resulting list.
 
 ```{r}
 # return the building 1033
