@@ -22,7 +22,7 @@
     stop(
       sprintf(
         "bplservices API request failed... [%s]",
-        httr::status_code(res),
+        httr::status_code(res)
       ),
       call. = FALSE
     )
@@ -76,6 +76,65 @@ fetch_request <- function(endpoint_url, query_params=NULL) {
   res <- httr::GET(url, add_headers(Authorization=token), query=query_params, encode='json', timeout=20)
   return(.parse_contents(res))  # parse result contents
 }
+
+.make_output_vec <- function(count, result){
+  # helper that returns a vector to store paginated output
+  vector(mode = 'any', round(count / length(reult)))
+}
+
+
+#' paginator_fetch_request
+#'
+#' @param endpoint_url
+#' @param query_params
+#' @param max_pages
+#'
+#' @return
+#' @export
+paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=20){
+
+  current_endpoint <- url
+  current_page <- 1
+  output_vec <- NULL
+  next_url <- NULL
+
+  # make initial request and check length of result... if it doesn't need pagination we return it
+  sprintf('Fetching data for request: %s', endpoint_url)
+  initial_contents <- fetch_request(current_endpoint, query_params=query_params)
+
+  if (is.null(intial_contents$count))
+    return(intial_contents)
+
+  while (current_page <= max_pages){
+    # set up the initial request - we need the first result to generate output vec as well
+    if (is.null(output_vec)){
+      output_vec <- .make_output_vec(intial_contents$count, intial_contents$result)
+      # this counts as the first iteration
+      output_vec[current_page] <- intial_contents
+
+      next_url <- intial_contents$next  # next to current next
+      current_page <- current_page + 1   # increment current_page
+    }
+    if(is.null(next_url)){  # if next is NULL then we're done... output the current_contents and return the output_vec
+      return(output_vec)
+    } else {
+      sprintf('Fetching data for request: %s', next_url)
+      next_contents <- fetch_request(next_url)  # get the next contents
+
+      current_page <- current_page + 1   # increment current_page
+      next_url <- next_contents$next    # if this is null it will get caught on the next loop
+      output_vec[current_page] <- next_contents
+
+      Sys.sleep(runif(1, 1.0, 1.5)) # sleep a little so we don't blow up the API
+    }
+  }
+
+  print('max_pages reached for request...')
+  return(output_vec)
+}
+
+
+
 
 
 #' post_request
