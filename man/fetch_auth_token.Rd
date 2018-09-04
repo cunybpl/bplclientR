@@ -4,7 +4,7 @@
 \alias{fetch_auth_token}
 \title{fetch auth token}
 \usage{
-fetch_auth_token(credentials = list(username = "", password = ""))
+fetch_auth_token(username, password)
 }
 \arguments{
 \item{credentials}{a username and password provided as a list}

@@ -7,7 +7,12 @@
 post_request(endpoint_url, payload = list())
 }
 \arguments{
-\item{payload}{}
+\item{endpoint_url}{the url for the endpoint}
+
+\item{payload}{the parameters needed for the post request}
+}
+\value{
+the contents of the response
 }
 \description{
 A post request route used for sending a data request to bema endpoints. Takes

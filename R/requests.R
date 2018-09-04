@@ -14,11 +14,8 @@
 
 .http_error_check <- function (res){
   # error checking the response
-  if (httr::http_type(res) != "application/json") {
-    stop("API did not return json", call. = FALSE)
-  }
-
   if (httr::http_error(res)) {
+    print(res)
     stop(
       sprintf(
         "bplservices API request failed... [%s]",
@@ -57,14 +54,14 @@
 #'
 #' TODO create a paginating endpoint similar to this for large responses
 #'
-#' @param endpoint_url
-#' @param params
-#' @param with_caching
+#' @param endpoint_url the api endpoint excluding the base
+#' @param query_params filters to use for querying data
+#' @param use_full_endpoint when set to true uses this as the full url
 #'
 #' @return parsed contents from the fetch request
 #' @export
 #' @import httr stringr
-fetch_request <- function(endpoint_url, query_params=NULL) {
+fetch_request <- function(endpoint_url, query_params=NULL, use_full_endpoint=F) {
 
   # get base url from cache
   base_url <- cache_get_base_url()
@@ -73,11 +70,6 @@ fetch_request <- function(endpoint_url, query_params=NULL) {
 
   res <- httr::GET(url, add_headers(Authorization=token), query=query_params, encode='json', timeout=20)
   return(.parse_contents(res))  # parse result contents
-}
-
-.make_output_vec <- function(count, result){
-  # helper that returns a vector to store paginated output
-  vector(mode = 'any', round(count / length(reult)))
 }
 
 
@@ -93,48 +85,39 @@ fetch_request <- function(endpoint_url, query_params=NULL) {
 #' @export
 paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=25){
 
-  current_endpoint <- url
   current_page <- 1
-  output_vec <- NULL
+  output_list <- NULL
   next_url <- NULL
 
   # make initial request and check length of result... if it doesn't need pagination we return it
-  sprintf('Fetching data for request: %s', endpoint_url)
-  initial_contents <- fetch_request(current_endpoint, query_params=query_params)
+  print(paste0('Fetching initial data for request: ', endpoint_url))
+  initial_contents <- fetch_request(endpoint_url, query_params=query_params)
+  #print(initial_contents)
 
-  if (is.null(intial_contents$count))
-    return(intial_contents)
+  if (is.null(initial_contents$`next`))
+    return(initial_contents)
+
+  output_list <- list()
+  output_list[[current_page]] <- initial_contents
 
   while (current_page <= max_pages){
     # set up the initial request - we need the first result to generate output vec as well
-    if (is.null(output_vec)){
-      output_vec <- .make_output_vec(intial_contents$count, intial_contents$result)
-      # this counts as the first iteration
-      output_vec[current_page] <- intial_contents
+    if(is.null(output_list[[current_page]]$`next`))  # if next is NULL then we're done... output the current_contents and return the output_list
+      return(output_list)
+    current_page <- current_page + 1
+    query_params$page <- current_page
 
-      next_url <- intial_contents$next  # next to current next
-      current_page <- current_page + 1   # increment current_page
-    }
-    if(is.null(next_url)){  # if next is NULL then we're done... output the current_contents and return the output_vec
-      return(output_vec)
-    } else {
-      sprintf('Fetching data for request: %s', next_url)
-      next_contents <- fetch_request(next_url)  # get the next contents
+    next_contents <- fetch_request(endpoint_url, query_params=query_params)
 
-      current_page <- current_page + 1   # increment current_page
-      next_url <- next_contents$next    # if this is null it will get caught on the next loop
-      output_vec[current_page] <- next_contents
+    print(paste0('next_contents$next: ', next_contents$`next`))
+    output_list[[current_page]] <- next_contents
 
-      Sys.sleep(runif(1, 1.0, 1.5)) # sleep a little so we don't blow up the API
-    }
+    Sys.sleep(runif(1, 0.5, 1.0)) # sleep a little so we don't blow up the API
   }
 
   print('max_pages reached for request...')
-  return(output_vec)
+  return(output_list)
 }
-
-
-
 
 
 #' post_request
@@ -142,10 +125,10 @@ paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=2
 #' A post request route used for sending a data request to bema endpoints. Takes
 #' a payload argument with a list for various settings documented in the service
 #'
-#' @param endpoint_url
-#' @param payload
+#' @param endpoint_url the url for the endpoint
+#' @param payload the parameters needed for the post request
 #'
-#' @return
+#' @return  the contents of the response
 #' @export
 #' @import httr
 post_request <- function(endpoint_url, payload=list()){
@@ -170,8 +153,9 @@ post_request <- function(endpoint_url, payload=list()){
 #' @return
 #' @export
 #' @import httr
-fetch_auth_token <- function(credentials=list(username='', password='')) {
+fetch_auth_token <- function(username, password) {
 
+  credentials = list(username=username, password=password)
   url <- cache_get_obtain_route() # get the obtain url
 
   res <- httr::POST(url,body=credentials, encode='json')

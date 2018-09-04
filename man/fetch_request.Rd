@@ -4,10 +4,14 @@
 \alias{fetch_request}
 \title{fetch_request}
 \usage{
-fetch_request(endpoint_url, query_params = NULL)
+fetch_request(endpoint_url, query_params = NULL, use_full_endpoint = F)
 }
 \arguments{
-\item{with_caching}{}
+\item{endpoint_url}{the api endpoint excluding the base}
+
+\item{query_params}{filters to use for querying data}
+
+\item{use_full_endpoint}{when set to true uses this as the full url}
 }
 \value{
 parsed contents from the fetch request
