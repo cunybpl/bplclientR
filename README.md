@@ -10,7 +10,12 @@ Make sure you have ```devtools``` installed and then use the token to fetch the 
 devtools::install_github('cunybpl/bplclientR', auth_token='token-string-here...')
 ```
 
-You can use this to fetch data from our backend, including portfolio data for multiple fiscal years for use in various apps and projects. The dynamic bema endpoints will give you utility and/or baseline model output for the specified target_date and month range.
+You can use this to fetch data from our backend for use in various apps and projects. These endpoints include: 
+
+* dcasdb - buildings metadata and consumption from dcas 
+* temp - nyc temperature data in various formats 
+* portfolios - pre-run models, eui breakdowns and lean analysis for fy2017 and fy2016 (24 mo periods) 
+* bema - dynamic utility and baseline model generation 
 
 
 
@@ -20,13 +25,11 @@ First you must initialize the ```cache```. This is a protected R env that stores
 
 ```{r}
 cache_init()
-
 ```
 You can make get or post requests to any of our [databases](https://bpl-services-staging.herokuapp.com/api/v1) as long as you have login credentials. This method needs to be called once before you can access our routes.
 
 ```{r}
 fetch_auth_token(username='username', password='password')
-
 ```
 The token is automatically stored in the cache on a successful request and as long as the developer uses our interface, will not have to worry about appending the auth token to request headers.
 
