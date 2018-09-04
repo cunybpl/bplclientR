@@ -1,4 +1,4 @@
-### bplclientR 
+# bplclientR 
 --------------
 
 An R package for interfacing with bplservices.
@@ -19,7 +19,7 @@ You can use this to fetch data from our backend for use in various apps and proj
 
 
 
-#### Authenticate
+### Authenticate
 -----------------
 First you must initialize the ```cache```. This is a protected R env that stores url routes and the jwt-token. This only needs to get called once when you start your session. The token automatically gets passed in the headers for our get and post request functions. 
 
@@ -35,7 +35,7 @@ The token is automatically stored in the cache on a successful request and as lo
 
 
 
-#### Fetch requests
+### Fetch requests
 -------------------
 
 With the jwt-token cached you can make filterable get requests to any of our list-view urls. The fetch_request method performs the request, checks for errors and returns parsed content. Any data records will be automatically converted into dataframes and can be retrieved from the resulting list 
@@ -69,7 +69,7 @@ page2df = contents[[2]]$result
 
 ```
 
-#### Bema requests 
+### Bema requests 
 ------------------
 
 Make a request to online-bema requires two requests. The first is a post request to one of the bema routes with the correct input. A 200 response should give the user a 'task_id'. This is passed into the ```polling_request``` function along with the results endpoint. This route pings the result url to get the result data.
