@@ -64,8 +64,6 @@
 #' @return parsed contents from the fetch request
 #' @export
 #' @import httr stringr
-#'
-#' @examples
 fetch_request <- function(endpoint_url, query_params=NULL) {
 
   # get base url from cache
@@ -85,13 +83,15 @@ fetch_request <- function(endpoint_url, query_params=NULL) {
 
 #' paginator_fetch_request
 #'
-#' @param endpoint_url
-#' @param query_params
-#' @param max_pages
+#' For larger requests this will handle paginated responses. Results are stored in a list.
 #'
-#' @return
+#' @param endpoint_url intial url endpoint
+#' @param query_params initial query params
+#' @param max_pages max number of pages to collect. Default is 25 or 2500 records.
+#'
+#' @return list of result contents
 #' @export
-paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=20){
+paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=25){
 
   current_endpoint <- url
   current_page <- 1
