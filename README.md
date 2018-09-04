@@ -10,6 +10,8 @@ Make sure you have ```devtools``` installed and then use the token to fetch the 
 devtools::install_github('cunybpl/bplclientR', auth_token='token-string-here...')
 ```
 
+You can use this to fetch data from our backend, including portfolio data for multiple fiscal years for use in various apps and projects. The dynamic bema endpoints will give you utility and/or baseline model output for the specified target_date and month range.
+
 
 
 #### Authenticate
@@ -27,6 +29,7 @@ fetch_auth_token(username='username', password='password')
 
 ```
 The token is automatically stored in the cache on a successful request and as long as the developer uses our interface, will not have to worry about appending the auth token to request headers.
+
 
 
 #### Fetch requests
@@ -68,8 +71,12 @@ page2df = contents[[2]]$result
 
 Make a request to online-bema requires two requests. The first is a post request to one of the bema routes with the correct input. A 200 response should give the user a 'task_id'. This is passed into the ```polling_request``` function along with the results endpoint. This route pings the result url to get the result data.
 
+For bema endpoints the target_date is always given as string %Y-%m-%d. The utility generator will look back the number of months in period starting from the month prior to date specified. 
+
 ```{r}
-task <- post_request('bema/utility/whole-facility', payload=)
+# make a utility file request for 24 months of fy data for 2016/17
+payload <- list(bdbid=1033, target_date='2017-07-01, period=24, no_sqft=TRUE)
+task <- post_request('bema/utility/whole-facility', payload=payload)
 
 # pass the task_id into this method... 
 # will poll for results.. 10 tries at an interval of 3 sec in between requests
