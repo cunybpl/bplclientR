@@ -55,13 +55,13 @@ With the jwt-token cached you can make filterable get requests to any of our lis
 
 ```{r}
 # return the building 1033
-content <- fetch_request('dcasdb/buildings/, query_params=list(bdbid=1033))
+content <- fetch_request('dcasdb/buildings/', query_params=list(bdbid=1033))
 
 # get the df -- data is always on a "result" key in the list
 bidf <- content$result
 
 # return changepoint models for building 1033 fy 2017
-content <- fetch_request('portfolios/changepoint-models/, query_params=list(bdbid=1033, fiscal_year=2017))
+content <- fetch_request('portfolios/changepoint-models/', query_params=list(bdbid=1033, fiscal_year=2017))
 
 # get the df
 models <- content$result
@@ -73,7 +73,7 @@ This stores all the paginated results in a list that you can combine the dfs in 
 
 ```{r}
 # this will return over 700 records... needs the paginator 
-contents <- paginator_fetch_request('dcasdb/consumption-records/, query_params=list(bdbid=1033))
+contents <- paginator_fetch_request('dcasdb/consumption-records/', query_params=list(bdbid=1033))
 
 page1df = contents[[1]]$result
 page2df = contents[[2]]$result 
@@ -96,7 +96,7 @@ task <- post_request('bema/utility/whole-facility', payload=payload)
 
 # pass the task_id into this method... 
 # will poll for results.. 10 tries at an interval of 3 sec in between requests
-result <- polling_request('bema/results/, task$task_id, tries=10, polling_interval=3)
+result <- polling_request('bema/results/', task$task_id, tries=10, polling_interval=3)
 
 ```
 
