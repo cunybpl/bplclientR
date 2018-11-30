@@ -4,8 +4,8 @@
 \alias{paginator_fetch_request}
 \title{paginator_fetch_request}
 \usage{
-paginator_fetch_request(endpoint_url, query_params = NULL,
-  max_pages = 25)
+paginator_fetch_request(endpoint_url, query_params = NULL, max_pages = 25,
+  sleep_interval = 0.5)
 }
 \arguments{
 \item{endpoint_url}{intial url endpoint}

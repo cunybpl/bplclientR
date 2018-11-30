@@ -4,8 +4,7 @@
 \alias{polling_request}
 \title{polling_request}
 \usage{
-polling_request(endpoint_url, task_id, tries = 10,
-  polling_interval = 3)
+polling_request(endpoint_url, task_id, tries = 10, polling_interval = 1)
 }
 \arguments{
 \item{endpoint_url}{the endpoint to fetch results}

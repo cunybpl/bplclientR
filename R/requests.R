@@ -1,17 +1,5 @@
 # request.R -- create requests for different endpoints
 
-
-.clean_hyperlinked_bdbids <- function(df){
-  # this will clean up the link for the bdbid in buildings
-  if ('oper_agency_acronym' %in% colnames(df)){
-    df[['bdbid']] = unlist(lapply(stringr::str_split(df[['bdbid']],'/'), function(row){
-      return(as.numeric(row[length(row)]))
-    }))
-  }
-  return(df)
-}
-
-
 .http_error_check <- function (res){
   # error checking the response
   if (httr::http_error(res)) {
@@ -39,9 +27,6 @@
   .http_error_check(res) # check for errors... if they pass then parse contents
 
   parsed_contents <- (jsonlite::fromJSON(content(res, "text"))) # result parser that parses JSON to R friendly things...
-
-  if (exists('results', parsed_contents))  # check for results and clean up (NOTE more cleaning can be added here if needed)
-    parsed_contents$results <- .clean_hyperlinked_bdbids(parsed_contents$results)
 
   return(parsed_contents)
 }
@@ -83,7 +68,7 @@ fetch_request <- function(endpoint_url, query_params=NULL, use_full_endpoint=F) 
 #'
 #' @return list of result contents
 #' @export
-paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=25){
+paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=25, sleep_interval = 0.5){
 
   current_page <- 1
   output_list <- NULL
@@ -112,7 +97,7 @@ paginator_fetch_request <- function(endpoint_url, query_params=NULL, max_pages=2
     print(paste0('next_contents$next: ', next_contents$`next`))
     output_list[[current_page]] <- next_contents
 
-    Sys.sleep(runif(1, 0.5, 1.0)) # sleep a little so we don't blow up the API
+    Sys.sleep(sleep_interval) # sleep a little so we don't blow up the API
   }
 
   print('max_pages reached for request...')
@@ -180,7 +165,7 @@ fetch_auth_token <- function(username, password) {
 #' @return parsed result or failure
 #' @export
 #' @import httr
-polling_request <- function(endpoint_url, task_id, tries=10, polling_interval=3){
+polling_request <- function(endpoint_url, task_id, tries=10, polling_interval=1){
 
   # get base url from cache
   base_url <- cache_get_base_url()

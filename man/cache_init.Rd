@@ -4,10 +4,13 @@
 \alias{cache_init}
 \title{cache_init}
 \usage{
-cache_init(base_url = "staging")
+cache_init(base_url = "staging",
+  api_url = "https://api.cunybplservices.net/")
 }
 \arguments{
 \item{base_url}{either 'staging' or 'production for convenience settings. defaults to staging}
+
+\item{api_url}{defaults to 'https://api.cunybplservices.net/'}
 }
 \description{
 configures the cache environemnt. An optional base_url name can be passed in for convenience.
