@@ -1,7 +1,7 @@
 Package: bplclientR
 Type: Package
 Title: bplservices REST API client
-Version: 0.0.1
+Version: 0.1.0
 Author: bsnacks000
 Maintainer: bsnacks000 <bsnacks000@gmail.com>
 Description: This package provides an http client that consumes the bplservices REST API. It

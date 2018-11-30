@@ -14,19 +14,16 @@
 #' This MUST be called first in order to configure the cache with the correct auth routes and base_url
 #'
 #' @param base_url either 'staging' or 'production for convenience settings. defaults to staging
+#' @param api_url defaults to 'https://api.cunybplservices.net/'
 #'
 #' @return
 #' @export
-cache_init = function (base_url='staging') {
+cache_init = function (base_url='staging', api_url = 'https://api.cunybplservices.net/') {
 
   .cache$base_url <- NULL  # setup base and token
   .cache$token <- NULL
 
-  if (base_url=='staging') {
-    cache_set_base_url('https://bpl-services-staging.herokuapp.com/api/v1/')
-  } else if(base_url=='production') {
-    cache_set_base_url('https://some-production-url.com') #configure this when production url is ready
-  }
+  cache_set_base_url(api_url)
 
   # set up token routes
   .cache$obtain = paste0(.cache$base_url, "auth/obtain-jwt-token/")
