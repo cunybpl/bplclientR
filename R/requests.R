@@ -53,7 +53,7 @@ fetch_request <- function(endpoint_url, query_params=NULL, use_full_endpoint=F) 
   token <- cache_get_token()
   url <- paste0(base_url, endpoint_url)
 
-  res <- httr::GET(url, add_headers(Authorization=token), query=query_params, encode='json', timeout=20)
+  res <- httr::GET(url, add_headers(Authorization=token), query=query_params, encode='json', timeout=20, config = httr::config(ssl_verifypeer = .cache$ssl_verify))
   return(.parse_contents(res))  # parse result contents
 }
 
@@ -65,6 +65,7 @@ fetch_request <- function(endpoint_url, query_params=NULL, use_full_endpoint=F) 
 #' @param endpoint_url intial url endpoint
 #' @param query_params initial query params
 #' @param max_pages max number of pages to collect. Default is 25 or 2500 records.
+#' @param sleep_interval Defaults to 0.5.
 #'
 #' @return list of result contents
 #' @export
@@ -122,7 +123,7 @@ post_request <- function(endpoint_url, payload=list()){
   token <- cache_get_token()
   url <- paste0(base_url, endpoint_url)
 
-  res <- httr::POST(url, add_headers(Authorization=token), body=payload, encode='json', timeout=20)
+  res <- httr::POST(url, add_headers(Authorization=token), body=payload, encode='json', timeout=20, config = httr::config(ssl_verifypeer = .cache$ssl_verify))
   return(.parse_contents(res))  # parse result contents
 }
 
@@ -133,7 +134,8 @@ post_request <- function(endpoint_url, payload=list()){
 #' This must be called at the beginning of any session so that credentials can be placed in future
 #' requests
 #'
-#' @param credentials a username and password provided as a list
+#' @param username username.
+#' @param password password.
 #'
 #' @return
 #' @export
@@ -143,7 +145,7 @@ fetch_auth_token <- function(username, password) {
   credentials = list(username=username, password=password)
   url <- cache_get_obtain_route() # get the obtain url
 
-  res <- httr::POST(url,body=credentials, encode='json')
+  res <- httr::POST(url,body=credentials, encode='json', config = httr::config(ssl_verifypeer = .cache$ssl_verify))
   parsed <- .parse_contents(res)
 
   # set the token in the cache
@@ -159,6 +161,7 @@ fetch_auth_token <- function(username, password) {
 #' Polling endpoint for urls to fetch completed work from bema
 #'
 #' @param endpoint_url the endpoint to fetch results
+#' @param task_id task_id string.
 #' @param tries the number of GET requests to send before giving up
 #' @param polling_interval the timeout interval between requests
 #'
@@ -174,7 +177,7 @@ polling_request <- function(endpoint_url, task_id, tries=10, polling_interval=1)
 
   for (i in 1:tries) {  # begin polling here
     sprintf('Polling... request: %d out of %d', i, tries)
-    res = httr::GET(url, add_headers(Authorization=token)) # hit the result endpoint
+    res = httr::GET(url, add_headers(Authorization=token), config = httr::config(ssl_verifypeer = .cache$ssl_verify)) # hit the result endpoint
     parsed <- .parse_contents(res)
 
     if (parsed$status == 'SUCCESS'){ # success

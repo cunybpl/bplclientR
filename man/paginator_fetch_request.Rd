@@ -4,8 +4,8 @@
 \alias{paginator_fetch_request}
 \title{paginator_fetch_request}
 \usage{
-paginator_fetch_request(endpoint_url, query_params = NULL, max_pages = 25,
-  sleep_interval = 0.5)
+paginator_fetch_request(endpoint_url, query_params = NULL,
+  max_pages = 25, sleep_interval = 0.5)
 }
 \arguments{
 \item{endpoint_url}{intial url endpoint}
@@ -13,6 +13,8 @@ paginator_fetch_request(endpoint_url, query_params = NULL, max_pages = 25,
 \item{query_params}{initial query params}
 
 \item{max_pages}{max number of pages to collect. Default is 25 or 2500 records.}
+
+\item{sleep_interval}{Defaults to 0.5.}
 }
 \value{
 list of result contents

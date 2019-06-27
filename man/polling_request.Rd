@@ -4,10 +4,13 @@
 \alias{polling_request}
 \title{polling_request}
 \usage{
-polling_request(endpoint_url, task_id, tries = 10, polling_interval = 1)
+polling_request(endpoint_url, task_id, tries = 10,
+  polling_interval = 1)
 }
 \arguments{
 \item{endpoint_url}{the endpoint to fetch results}
+
+\item{task_id}{task_id string.}
 
 \item{tries}{the number of GET requests to send before giving up}
 

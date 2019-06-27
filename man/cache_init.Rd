@@ -5,12 +5,14 @@
 \title{cache_init}
 \usage{
 cache_init(base_url = "staging",
-  api_url = "https://api.cunybplservices.net/")
+  api_url = "https://api.cunybplservices.net/", ssl_verify = TRUE)
 }
 \arguments{
 \item{base_url}{either 'staging' or 'production for convenience settings. defaults to staging}
 
 \item{api_url}{defaults to 'https://api.cunybplservices.net/'}
+
+\item{ssl_verify}{defaults to TRUE.}
 }
 \description{
 configures the cache environemnt. An optional base_url name can be passed in for convenience.

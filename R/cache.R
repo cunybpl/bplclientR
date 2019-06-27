@@ -15,14 +15,15 @@
 #'
 #' @param base_url either 'staging' or 'production for convenience settings. defaults to staging
 #' @param api_url defaults to 'https://api.cunybplservices.net/'
+#' @param ssl_verify defaults to TRUE.
 #'
 #' @return
 #' @export
-cache_init = function (base_url='staging', api_url = 'https://api.cunybplservices.net/') {
+cache_init = function (base_url='staging', api_url = 'https://api.cunybplservices.net/', ssl_verify = TRUE) {
 
   .cache$base_url <- NULL  # setup base and token
   .cache$token <- NULL
-
+  .cache$ssl_verify <- ssl_verify
   cache_set_base_url(api_url)
 
   # set up token routes
