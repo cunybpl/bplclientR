@@ -97,3 +97,9 @@ cache_get_refresh_route <- function() { .cache$refresh }
 #' @return the jwt-token verify route
 #' @export
 cache_get_verify_route <- function() { .cache$verify }
+
+#' cache_get_ssl_verify
+#'
+#' @return ssl_verify flag
+#' @export
+cache_get_ssl_verify <- function(){.cache$ssl_verify}

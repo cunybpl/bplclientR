@@ -52,8 +52,9 @@ fetch_request <- function(endpoint_url, query_params=NULL, use_full_endpoint=F) 
   base_url <- cache_get_base_url()
   token <- cache_get_token()
   url <- paste0(base_url, endpoint_url)
+  ssl_verify <- cache_get_ssl_verify()
 
-  res <- httr::GET(url, add_headers(Authorization=token), query=query_params, encode='json', timeout=20, config = httr::config(ssl_verifypeer = .cache$ssl_verify))
+  res <- httr::GET(url, add_headers(Authorization=token), query=query_params, encode='json', timeout=20, config = httr::config(ssl_verifypeer = ssl_verify))
   return(.parse_contents(res))  # parse result contents
 }
 
