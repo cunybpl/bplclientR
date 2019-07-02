@@ -123,8 +123,9 @@ post_request <- function(endpoint_url, payload=list()){
   base_url <- cache_get_base_url()
   token <- cache_get_token()
   url <- paste0(base_url, endpoint_url)
+  ssl_verify <- cache_get_ssl_verify()
 
-  res <- httr::POST(url, add_headers(Authorization=token), body=payload, encode='json', timeout=20, config = httr::config(ssl_verifypeer = .cache$ssl_verify))
+  res <- httr::POST(url, add_headers(Authorization=token), body=payload, encode='json', timeout=20, config = httr::config(ssl_verifypeer = ssl_verify))
   return(.parse_contents(res))  # parse result contents
 }
 
