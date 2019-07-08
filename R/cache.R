@@ -17,7 +17,6 @@
 #' @param api_url defaults to 'https://api.cunybplservices.net/'
 #' @param ssl_verify defaults to TRUE.
 #'
-#' @return
 #' @export
 cache_init = function (base_url='staging', api_url = 'https://api.cunybplservices.net/', ssl_verify = TRUE) {
 

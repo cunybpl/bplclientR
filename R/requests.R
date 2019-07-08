@@ -139,7 +139,6 @@ post_request <- function(endpoint_url, payload=list()){
 #' @param username username.
 #' @param password password.
 #'
-#' @return
 #' @export
 #' @import httr
 fetch_auth_token <- function(username, password) {
@@ -147,7 +146,7 @@ fetch_auth_token <- function(username, password) {
   credentials = list(username=username, password=password)
   url <- cache_get_obtain_route() # get the obtain url
 
-  res <- httr::POST(url,body=credentials, encode='json', config = httr::config(ssl_verifypeer = .cache$ssl_verify))
+  res <- httr::POST(url,body=credentials, encode='json', config = httr::config(ssl_verifypeer = .cache$ssl_verify), timeout(20))
   parsed <- .parse_contents(res)
 
   # set the token in the cache
