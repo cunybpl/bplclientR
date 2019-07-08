@@ -148,6 +148,7 @@ fetch_auth_token <- function(username, password) {
 
   res <- httr::POST(url,body=credentials, encode='json', config = httr::config(ssl_verifypeer = .cache$ssl_verify), timeout(20))
   parsed <- .parse_contents(res)
+  print(parsed)
 
   # set the token in the cache
   cache_set_token(parsed$token)
